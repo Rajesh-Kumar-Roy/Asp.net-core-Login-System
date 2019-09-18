@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AuthorizationTestProject.DBContext;
 using AuthorizationTestProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthorizationTestProject.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly ATestDBContext _context;
@@ -20,12 +22,16 @@ namespace AuthorizationTestProject.Controllers
         }
 
         // GET: Students
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Students.ToListAsync());
         }
 
         // GET: Students/Details/5
+       [HttpGet]
+       [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +50,8 @@ namespace AuthorizationTestProject.Controllers
         }
 
         // GET: Students/Create
+        [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +61,7 @@ namespace AuthorizationTestProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,Address")] Student student)
         {
@@ -66,6 +75,8 @@ namespace AuthorizationTestProject.Controllers
         }
 
         // GET: Students/Edit/5
+        [HttpGet]
+      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +97,7 @@ namespace AuthorizationTestProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+      
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Address")] Student student)
         {
             if (id != student.Id)

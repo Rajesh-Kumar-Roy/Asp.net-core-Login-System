@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationTestProject.DBContext
 {
-    public class ATestDBContext:IdentityDbContext
+    public class ATestDBContext:IdentityDbContext<ApplicationUser>
     {
         public ATestDBContext(DbContextOptions<ATestDBContext> options):base(options)
         {
