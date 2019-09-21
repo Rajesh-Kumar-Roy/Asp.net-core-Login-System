@@ -47,7 +47,7 @@ namespace AuthorizationTestProject
                     options.Password.RequireUppercase = false;
                 })
                 .AddEntityFrameworkStores<ATestDBContext>();
-                
+            services.AddDbContext<ATestDBContext>(ServiceLifetime.Transient);
             services.AddMvc(options =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
