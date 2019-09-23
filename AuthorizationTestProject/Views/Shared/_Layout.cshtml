@@ -36,8 +36,46 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="text-dark nav-link" asp-area=""asp-controller="Students"asp-action="Index">Student</a>
+                            <a class="text-dark nav-link" asp-area="" asp-controller="Students" asp-action="Index">Student</a>
                         </li>
+
+                        @*@if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area=""asp-controller="Administration" asp-action="ListRole"> Mange Role</a>
+            </li>
+        }*@
+                        @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+                        {
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="False">Manage Role</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListUser">User</a>
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListRole">Roles</a>
+                                </div>
+                            </li>
+                            
+                            
+                            
+                            
+                            
+                            
+                            @*<li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>*@
+                        }
+
                     </ul>
                     <ul class="nav navbar-nav nav justify-content-end ">
                         @if (signInManager.IsSignedIn(User))

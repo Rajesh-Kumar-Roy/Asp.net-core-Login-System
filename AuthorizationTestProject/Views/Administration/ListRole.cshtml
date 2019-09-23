@@ -7,6 +7,8 @@
 <a class="btn btn-primary mb-3" style="width: auto" asp-action="CreateRole" asp-controller="Administration">
     Add New Role
 </a>
+
+
 <br />
 
 @if (Model.Any())
@@ -24,8 +26,13 @@
                 </h5>
             </div>
             <div class="card-footer">
-                <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole"asp-route-id="@role.Id">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                @*@if (((@role.Id == "b1df3536-d2f7-4d6c-8d41-56940aedad57")|| role.Name=="User") && User.IsInRole("Contoller"))
+                {
+                    <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                }*@
             </div>
         </div>
     }

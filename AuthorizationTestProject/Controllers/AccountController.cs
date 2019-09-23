@@ -90,6 +90,10 @@ namespace AuthorizationTestProject.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if (_signInManager.IsSignedIn(User)&&User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUser", "Administration");
+                    }
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -100,6 +104,13 @@ namespace AuthorizationTestProject.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AuthorizationTestProject.Models;
 using AuthorizationTestProject.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationTestProject.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -20,11 +23,100 @@ namespace AuthorizationTestProject.Controllers
         }
 
         [HttpGet]
+        public async  Task<IActionResult> EditUser(string id)
+        {
+          var user= await _userManager.FindByIdAsync(id);
+          if (user == null)
+          {
+              ViewBag.ErrorMessage($"User With Id: {id} can not found!");
+              return View("NotFound");
+          }
+
+          var userCliams = await _userManager.GetClaimsAsync(user);
+          var userRoles =await _userManager.GetRolesAsync(user);
+          var model = new EditUserViewModel();
+          model.Id = user.Id;
+          model.Email = user.Email;
+          model.UserName = user.UserName;
+          model.City = user.City;
+          model.Claims = userCliams.Select(c => c.Value).ToList();
+          model.Roles = userRoles;
+
+
+          return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage($"user with Id{model.Id} can not found!");
+                return View("NotFound");
+            }
+            else
+            {
+              
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.City = model.City;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage($"User with Id:{id} Can not found!");
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUser");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+
+                return View("ListUser");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ListUser()
+        {
+            var user = _userManager.Users;
+            return View(user);
+        }
+      
+
+        [HttpGet]
         public IActionResult CreateRole()
         {
             return View();
         }
         [HttpPost]
+        
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
