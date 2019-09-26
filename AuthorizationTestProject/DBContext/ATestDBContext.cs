@@ -18,5 +18,13 @@ namespace AuthorizationTestProject.DBContext
 
         public DbSet<Student> Students { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            foreach (var foreignKey in builder.Model.GetEntityTypes().SelectMany(c=>c.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
     }
 }

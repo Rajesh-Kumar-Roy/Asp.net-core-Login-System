@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace AuthorizationTestProject.ViewModel
 {
-    public class UserRoleViewModel
+    public class UserCliam
     {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
+        public string ClaimType { get; set; }
         public bool IsSelected { get; set; }
     }
 }

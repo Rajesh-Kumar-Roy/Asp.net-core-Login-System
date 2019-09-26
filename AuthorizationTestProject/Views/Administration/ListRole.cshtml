@@ -26,13 +26,28 @@
                 </h5>
             </div>
             <div class="card-footer">
+                <form asp-action="DeleteRole"asp-route-id="@role.Id"method="post">
                 <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                
+                
+            <span id="confirmDeleteSpan_@role.Id"style="display: none">
+                        
+                <span>Are you sure your want to Delete?</span>
+                <button type="submit" class="btn btn-danger">Yes</button>
+                <a class="btn btn-primary"href="#"onclick="ConfimDelete('@role.Id',false)">No</a>
+            </span>
+
+            <span id="deleteSpan_@role.Id">
+                <a href="#"class="btn btn-danger"onclick="ConfimDelete('@role.Id',true)">Delete</a>
+            </span>
+                    
+            </form>
                 @*@if (((@role.Id == "b1df3536-d2f7-4d6c-8d41-56940aedad57")|| role.Name=="User") && User.IsInRole("Contoller"))
                 {
                     <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">Edit</a>
                     <a href="#" class="btn btn-danger">Delete</a>
                 }*@
+
             </div>
         </div>
     }
@@ -52,4 +67,7 @@ else
             </a>
         </div>
     </div>
+}
+@section Scripts{ 
+    <script src="~/CustomJavascript.js"></script>
 }

@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 
 namespace AuthorizationTestProject.ViewModel
 {
-    public class UserRoleViewModel
+    public class UserClaimViewModel
     {
+        public UserClaimViewModel()
+        {
+            Cliams = new List<UserCliam>();
+        }
+
         public string UserId { get; set; }
-        public string UserName { get; set; }
-        public bool IsSelected { get; set; }
+        public List<UserCliam> Cliams { get; set; }
     }
 }
